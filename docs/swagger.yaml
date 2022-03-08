@@ -1,0 +1,87 @@
+basePath: /api/v1
+definitions:
+  model.Parameters:
+    properties:
+      hits:
+        type: integer
+      int1:
+        type: integer
+      int2:
+        type: integer
+      limit:
+        type: integer
+      str1:
+        type: string
+      str2:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    url: https://github.com/jeromelesaux
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: swagger for the fizzbuzz implementation
+  version: "1.0"
+paths:
+  /fizzbuzz:
+    get:
+      consumes:
+      - application/json
+      description: get the fizzbuzz slice of string
+      parameters:
+      - description: first integer
+        format: int
+        in: query
+        name: int1
+        type: string
+      - description: second integer
+        format: int
+        in: query
+        name: int2
+        type: string
+      - description: first string to replace
+        format: string
+        in: query
+        name: str1
+        type: string
+      - description: second string to replace
+        format: string
+        in: query
+        name: str2
+        type: string
+      - description: limit to reach
+        format: int
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Parameters'
+            type: array
+      summary: get the fizzbuzz slice of string
+      tags:
+      - fizzbuzz
+  /stats:
+    get:
+      description: return the maximum hits request statistics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Parameters'
+            type: array
+      summary: return the maximum hits request statistics
+      tags:
+      - stats
+swagger: "2.0"

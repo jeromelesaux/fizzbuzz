@@ -1,0 +1,130 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "swagger for the fizzbuzz implementation",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "url": "https://github.com/jeromelesaux"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/fizzbuzz": {
+            "get": {
+                "description": "get the fizzbuzz slice of string",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fizzbuzz"
+                ],
+                "summary": "get the fizzbuzz slice of string",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "int",
+                        "description": "first integer",
+                        "name": "int1",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "int",
+                        "description": "second integer",
+                        "name": "int2",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "string",
+                        "description": "first string to replace",
+                        "name": "str1",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "string",
+                        "description": "second string to replace",
+                        "name": "str2",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "int",
+                        "description": "limit to reach",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Parameters"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stats": {
+            "get": {
+                "description": "return the maximum hits request statistics",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "stats"
+                ],
+                "summary": "return the maximum hits request statistics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Parameters"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.Parameters": {
+            "type": "object",
+            "properties": {
+                "hits": {
+                    "type": "integer"
+                },
+                "int1": {
+                    "type": "integer"
+                },
+                "int2": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "str1": {
+                    "type": "string"
+                },
+                "str2": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
