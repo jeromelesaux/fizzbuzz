@@ -2,14 +2,22 @@ package configuration
 
 import (
 	"errors"
+	"log"
 	"os"
 )
 
+type PersistenceType string
+
 type Configuration struct {
-	Port string
+	Port        string
+	Persistence PersistenceType
 }
 
-var StaticConfiguration = &Configuration{}
+var (
+	MemoryType          PersistenceType = "MEMORY"
+	DatabaseType        PersistenceType = "DATABASE"
+	StaticConfiguration                 = &Configuration{Persistence: MemoryType}
+)
 
 func init() {
 	InitEnv()
@@ -17,6 +25,11 @@ func init() {
 
 func InitEnv() {
 	StaticConfiguration.Port = GetEnvValue("PORT")
+	persistenceType := GetEnvValue("PERSISTENCE")
+	if persistenceType == string(DatabaseType) {
+		StaticConfiguration.Persistence = DatabaseType
+	}
+	log.Printf("Persistence used: %s\n", StaticConfiguration.Persistence)
 }
 
 func CheckConfiguration() error {

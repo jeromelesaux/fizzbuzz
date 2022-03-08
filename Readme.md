@@ -12,6 +12,9 @@ If you want to install the standalone application, you will need a golang instal
 You can manage the listen port of the HTTP server. 
 In the standalone app before runnnig, export as environnement variable : `export PORT="8080"`. 
 In the docker version, modify in the head of the makefile file, the variable HTTP_PORT to the desired PORT. And run by `make docker-run`.
+You can also choose your persistence such as in memory or in database. To configure this property set the environnement variable PERSISTENCE to MEMORY or DATABASE. 
+Like `export PERSISTENCE="DATABASE"`. 
+By default, in memory is set.
 
 ## Installation 
 To get help on command line, just type `make help` in a terminal.

@@ -4,6 +4,7 @@ import (
 	"log"
 	"sort"
 
+	"github.com/jeromelesaux/fizzbuzz/configuration"
 	"github.com/jeromelesaux/fizzbuzz/model"
 )
 
@@ -24,6 +25,26 @@ func runChannel() {
 }
 
 func Add(p model.Parameters) {
+	if configuration.StaticConfiguration.Persistence == configuration.MemoryType {
+		AddInMemory(p)
+	} else {
+		AddInDB(p)
+	}
+}
+
+func GetMostFrequent() (model.Parameters, int) {
+	if configuration.StaticConfiguration.Persistence == configuration.MemoryType {
+		return GetMostFrequentMemory()
+	} else {
+		p, err := GetMostFrequentDB()
+		if err != nil {
+			log.Printf("%s\n", err.Error())
+		}
+		return p, int(p.Hits)
+	}
+}
+
+func AddInMemory(p model.Parameters) {
 	log.Printf("adding new model.Parameters\n")
 	RequestsStored[p]++
 }
@@ -39,7 +60,7 @@ func (p Pairlist) Len() int           { return len(p) }
 func (p Pairlist) Less(i, j int) bool { return p[i].V < p[j].V }
 func (p Pairlist) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
-func GetMostFrequent() (model.Parameters, int) {
+func GetMostFrequentMemory() (model.Parameters, int) {
 	if len(RequestsStored) == 0 {
 		return model.Parameters{}, 0
 	}

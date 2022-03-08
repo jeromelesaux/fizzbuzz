@@ -1,4 +1,0 @@
-- ajouter test unitaire pour le server 
-- ajouter sqlite pour une persistence en base avec arguments OS env SAVE MEMORY or DATABASE
-- ajouter un README 
-- ajouter commentaire 
