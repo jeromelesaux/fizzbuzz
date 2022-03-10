@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 )
@@ -31,11 +32,19 @@ func ParseParameters(r *http.Request) (p *Parameters, err error) {
 	if err != nil {
 		return
 	}
+
+	if i1 == 0 {
+		return p, errors.New("int1 must differ from 0")
+	}
 	p.Int1 = i1
 
 	i2, err := parseInt64(r.URL.Query().Get("int2"))
 	if err != nil {
 		return
+	}
+
+	if i2 == 0 {
+		return p, errors.New("int2 must differ from 0")
 	}
 	p.Int2 = i2
 
