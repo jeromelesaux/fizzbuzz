@@ -3,7 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"os"
 	"testing"
@@ -11,6 +13,8 @@ import (
 	"github.com/jeromelesaux/fizzbuzz/configuration"
 	"github.com/jeromelesaux/fizzbuzz/model"
 )
+
+var serverIsLaunched = false
 
 func TestServerStatsResponse200(t *testing.T) {
 	// launch in background the server
@@ -76,7 +80,59 @@ func TestSimpleFizbuzzResponse200(t *testing.T) {
 }
 
 func launchServer() {
+	if serverIsLaunched == true {
+		return
+	}
 	os.Setenv("PORT", "3000")
 	configuration.InitEnv()
 	go main()
+	serverIsLaunched = true
+}
+
+func benchServerResponses(i int) {
+	int1 := rand.Intn(i + 1)
+	int2 := rand.Intn(i + 1)
+	limit := rand.Intn(1000)
+	query := fmt.Sprintf("http://localhost:3000/api/v1/fizzbuzz?int1=%d&int2=%d&str1=fizz&str2=buzz&limit=%d", int1, int2, limit)
+	r, _ := http.NewRequest(http.MethodGet, query, nil)
+	r.Close = true
+	c := http.DefaultClient
+	// execute query
+	res, _ := c.Do(r)
+	res.Body.Close()
+}
+
+func BenchmarkFizzbuzz10(b *testing.B) {
+	launchServer()
+	for i := 0; i < b.N; i++ {
+		benchServerResponses(i)
+	}
+}
+
+func BenchmarkFizzbuzz20(b *testing.B) {
+	launchServer()
+	for i := 0; i < b.N; i++ {
+		benchServerResponses(i)
+	}
+}
+
+func BenchmarkFizzbuzz30(b *testing.B) {
+	launchServer()
+	for i := 0; i < b.N; i++ {
+		benchServerResponses(i)
+	}
+}
+
+func BenchmarkFizzbuzz40(b *testing.B) {
+	launchServer()
+	for i := 0; i < b.N; i++ {
+		benchServerResponses(i)
+	}
+}
+
+func BenchmarkFizzbuzz50(b *testing.B) {
+	launchServer()
+	for i := 0; i < b.N; i++ {
+		benchServerResponses(i)
+	}
 }

@@ -52,6 +52,10 @@ func ParseParameters(r *http.Request) (p *Parameters, err error) {
 	if err != nil {
 		return
 	}
+
+	if limit > 1000 {
+		return p, errors.New("limit is limited to value 1000")
+	}
 	p.Limit = limit
 
 	p.Str1 = r.URL.Query().Get("str1")
