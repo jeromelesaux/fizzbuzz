@@ -56,7 +56,10 @@ func AddInDB(p model.Parameters) error {
 	}
 	var count sql.NullInt64
 	if rows.Next() {
-		rows.Scan(&count)
+		err := rows.Scan(&count)
+		if err != nil {
+			return err
+		}
 	}
 	rows.Close()
 	var q string
@@ -81,9 +84,15 @@ func AddInDB(p model.Parameters) error {
 
 	affected, err := tx.Stmt(stmt).Exec(hits, p.Int1, p.Int2, p.Str1, p.Str2, p.Limit)
 	if err != nil {
-		tx.Rollback()
+		err := tx.Rollback()
+		if err != nil {
+			return err
+		}
 	} else {
-		tx.Commit()
+		err := tx.Commit()
+		if err != nil {
+			return err
+		}
 	}
 	rs, err := affected.RowsAffected()
 	log.Printf("affected %d and error %v\n", rs, err)
@@ -110,9 +119,15 @@ func DeleteStatsDB() error {
 
 	_, err = tx.Stmt(stmt).Exec()
 	if err != nil {
-		tx.Rollback()
+		err := tx.Rollback()
+		if err != nil {
+			return err
+		}
 	} else {
-		tx.Commit()
+		err := tx.Commit()
+		if err != nil {
+			return err
+		}
 	}
 	return err
 }

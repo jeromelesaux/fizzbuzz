@@ -46,10 +46,16 @@ func TestAdd(t *testing.T) {
 	}
 	emptyParam := model.Parameters{}
 	for i := 0; i < 5; i++ {
-		Add(param)
+		err := Add(param)
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 	for i := 0; i < 10; i++ {
-		Add(emptyParam)
+		err := Add(emptyParam)
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 	if RequestsStored[emptyParam] != 10 {
 		t.Fatalf("expected 10 occurence for empty param and gets %d\n", RequestsStored[emptyParam])

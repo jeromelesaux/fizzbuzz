@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	RequestsStored    = make(map[model.Parameters]int, 0)
+	RequestsStored    = make(map[model.Parameters]int)
 	AddParametersChan chan model.Parameters
 )
 
@@ -20,16 +20,23 @@ func init() {
 
 func runChannel() {
 	for p := range AddParametersChan {
-		Add(p)
+		err := Add(p)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
-func Add(p model.Parameters) {
+func Add(p model.Parameters) error {
 	if configuration.StaticConfiguration.Persistence == configuration.MemoryType {
 		AddInMemory(p)
 	} else {
-		AddInDB(p)
+		err := AddInDB(p)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func GetMostFrequent() (model.Parameters, int) {

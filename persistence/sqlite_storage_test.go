@@ -18,11 +18,17 @@ func TestInsertNewParameters(t *testing.T) {
 		}
 	}
 
-	DeleteStatsDB()
+	err := DeleteStatsDB()
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestMostFrequentHitsInDb(t *testing.T) {
-	DeleteStatsDB()
+	err := DeleteStatsDB()
+	if err != nil {
+		t.Fatal(err)
+	}
 	p := model.Parameters{Int1: 1, Int2: 5, Str1: "fizz", Str2: "buzz", Limit: 100}
 	for i := 0; i < 10; i++ {
 		if err := AddInDB(p); err != nil {
@@ -30,7 +36,7 @@ func TestMostFrequentHitsInDb(t *testing.T) {
 		}
 	}
 
-	p, err := GetMostFrequentDB()
+	p, err = GetMostFrequentDB()
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
